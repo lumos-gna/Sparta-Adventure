@@ -8,6 +8,7 @@ public class InputController : MonoBehaviour
 
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
+    [SerializeField] private Vector2EventChannelSO zoomInputChannel;
 
     private void Awake()
     {
@@ -27,4 +28,5 @@ public class InputController : MonoBehaviour
     }
 
     public void OnLookInput(InputAction.CallbackContext context) => lookInputChannel.Raise(context.ReadValue<Vector2>());
+    public void OnZoomInput(InputAction.CallbackContext context) => zoomInputChannel.Raise(context.ReadValue<Vector2>());
 }
