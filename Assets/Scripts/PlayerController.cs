@@ -19,18 +19,15 @@ public class PlayerController : MonoBehaviour
     [Space(5f)]
     [SerializeField] private float jumpForce;
     [SerializeField] private float airMoveSpeedRate;
-    [SerializeField] private float maxJumpChargeTime;
     
     
     [Space(10f)]
     [Header("Events")]
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpStartInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpEndInputChannel;
+    [SerializeField] private VoidEventChannelSO jumpInputChannel;
 
 
     private float _moveSpeed;
-    private float _jumpChargeRate;
     
     private bool _isJumping;
     
@@ -47,8 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         moveInputChannel.OnEventRaised += UpdateMoveInputDir;
-        jumpStartInputChannel.OnEventRaised += JumpCharging;
-        jumpEndInputChannel.OnEventRaised += Jump;
+        jumpInputChannel.OnEventRaised += Jump;
     }
     
     private void FixedUpdate()
@@ -61,11 +57,9 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         moveInputChannel.OnEventRaised -= UpdateMoveInputDir;
-        jumpStartInputChannel.OnEventRaised -= JumpCharging;
-        jumpEndInputChannel.OnEventRaised -= Jump;
+        jumpInputChannel.OnEventRaised -= Jump;
     }
     
-
     void UpdateMoveInputDir(Vector2 inputDir) => _moveInputDelta = inputDir;
 
     
@@ -80,10 +74,7 @@ public class PlayerController : MonoBehaviour
         
         _moveDir.Normalize();
         
-        if (_isJumping == false)
-        {
-            rigid.MovePosition(rigid.position + _moveDir * _moveSpeed);
-        }
+        rigid.MovePosition(rigid.position + _moveDir * _moveSpeed);
     }
 
     void Jump()
@@ -94,16 +85,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void JumpCharging()
-    {
-        if (_jumpChargingCoroutine != null)
-        {
-            StopCoroutine(_jumpChargingCoroutine);
-        }
-
-        _jumpChargingCoroutine = StartCoroutine(JumpChargingCoroutine());
-    }
-    
     
     void Rotation()
     {
@@ -129,19 +110,6 @@ public class PlayerController : MonoBehaviour
         return Physics.CheckCapsule(point1, point2,  coll.radius, groundLayer);
     }
 
-    IEnumerator JumpChargingCoroutine()
-    {
-        float chargeTime = 0;
-
-        while (chargeTime < maxJumpChargeTime)
-        {
-            chargeTime += Time.deltaTime;
-            
-            _jumpChargeRate = chargeTime / maxJumpChargeTime;
-
-            yield return null;
-        }
-    }
 
     IEnumerator JumpCoroutine()
     {
@@ -149,11 +117,16 @@ public class PlayerController : MonoBehaviour
 
         _moveSpeed = defaultMoveSpeed * airMoveSpeedRate;
         
-        rigid.AddForce((transform.up + _moveDir) * (jumpForce * _jumpChargeRate), ForceMode.Impulse);
-
+        rigid.AddForce((transform.up + _moveDir) * jumpForce, ForceMode.Impulse);
+        
         yield return new WaitForSeconds(0.1f);
 
-        yield return new WaitUntil(IsGrounded);
+        while (!IsGrounded())
+        {
+           
+
+            yield return null;
+        }
         
         _moveSpeed = defaultMoveSpeed;
 

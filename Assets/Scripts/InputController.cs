@@ -13,8 +13,7 @@ public class InputController : MonoBehaviour
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpStartInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpEndInputChannel;
+    [SerializeField] private VoidEventChannelSO jumpInputChannel;
 
     
     private void Awake()
@@ -42,10 +41,7 @@ public class InputController : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Started : 
-                jumpStartInputChannel.Raise(); break;
-            case InputActionPhase.Canceled : 
-                jumpEndInputChannel.Raise(); break;
+                jumpInputChannel.Raise(); break;
         }
     }
-
 }
