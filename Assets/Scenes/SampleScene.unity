@@ -736,6 +736,7 @@ MonoBehaviour:
   cameraContainer: {fileID: 782920449}
   moveSpeed: 10
   moveInputChannel: {fileID: 11400000, guid: d9554cf692546dc40aae21fbc417dfbd, type: 2}
+  jumpInputChannel: {fileID: 11400000, guid: d9554cf692546dc40aae21fbc417dfbd, type: 2}
 --- !u!54 &1972696195
 Rigidbody:
   m_ObjectHideFlags: 0

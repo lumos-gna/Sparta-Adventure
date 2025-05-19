@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class GenericEventChannelSO<T> : ScriptableObject
 {
-    public event UnityAction<T> OnEventRasied;
+    public event UnityAction<T> OnEventRaised;
 
-    public void Raise(T data) => OnEventRasied?.Invoke(data);
+    public void Raise(T data) => OnEventRaised?.Invoke(data);
 }

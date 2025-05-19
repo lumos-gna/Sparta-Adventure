@@ -37,8 +37,8 @@ public class PlayerCameraController : MonoBehaviour
     
     private void Start()
     {
-        lookInputChannel.OnEventRasied += UpdateLookInputAngle;
-        zoomInputChannel.OnEventRasied += Zoom;
+        lookInputChannel.OnEventRaised += UpdateLookInputAngle;
+        zoomInputChannel.OnEventRaised += Zoom;
     }
 
 
@@ -51,8 +51,8 @@ public class PlayerCameraController : MonoBehaviour
 
     private void OnDestroy()
     {
-        lookInputChannel.OnEventRasied -= UpdateLookInputAngle;
-        zoomInputChannel.OnEventRasied -= Zoom;
+        lookInputChannel.OnEventRaised -= UpdateLookInputAngle;
+        zoomInputChannel.OnEventRaised -= Zoom;
     }
     
     
@@ -70,6 +70,7 @@ public class PlayerCameraController : MonoBehaviour
     void UpdatePos()
     {
         cameraContainer.eulerAngles = _lookInputAngle;
+
 
         _camDist = Mathf.Clamp(_camDist, minLookDist, maxLookDist);
 
@@ -90,9 +91,9 @@ public class PlayerCameraController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, _camDist))
         {
-            float distToHit = Vector3.Distance(transform.position, hit.point);
+            float hitDist = Vector3.Distance(transform.position, hit.point);
             
-            _camObstacleDist = Mathf.Clamp(_camDist - distToHit, 0f, _camDist);
+            _camObstacleDist = Mathf.Clamp(_camDist - hitDist, 0f, _camDist);
         }
         else
         {

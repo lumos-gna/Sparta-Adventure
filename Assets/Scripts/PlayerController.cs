@@ -1,27 +1,38 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody rigid;
+    [SerializeField] private CapsuleCollider coll;
     [SerializeField] private Transform cameraContainer;
 
     
     [Space(10f)]
-    [Header("Move")]
+    [Header("Setting")]
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float moveSpeed;
-    
-    private Vector2 _moveInputDelta;
+    [SerializeField] private float jumpForce;
     
     
     [Space(10f)]
     [Header("Events")]
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
+    [SerializeField] private VoidEventChannelSO jumpInputChannel;
+
+
+    private bool _isJumping;
+    
+    private Vector2 _moveInputDelta;
+    private Vector3 _moveDir;
     
     private void Start()
     {
-        moveInputChannel.OnEventRasied += SetMoveInputDir;
+        moveInputChannel.OnEventRaised += UpdateMoveInputDir;
+        jumpInputChannel.OnEventRaised += Jump;
     }
     
     private void FixedUpdate()
@@ -33,26 +44,36 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        moveInputChannel.OnEventRasied -= SetMoveInputDir;
+        moveInputChannel.OnEventRaised -= UpdateMoveInputDir;
+        jumpInputChannel.OnEventRaised += Jump;
     }
     
 
-    void SetMoveInputDir(Vector2 inputDir) => _moveInputDelta = inputDir * moveSpeed;
+    void UpdateMoveInputDir(Vector2 inputDir) => _moveInputDelta = inputDir * moveSpeed;
 
     
     void Move()
     {
-        Vector3 camForward = cameraContainer.forward;
-        Vector3 camRight = cameraContainer.right;
+        Vector3 dirForward = cameraContainer.forward.normalized *  _moveInputDelta.y;
+        Vector3 dirRight = cameraContainer.right.normalized *  _moveInputDelta.x;
 
-        camForward.y = 0;
-        camRight.y = 0;
+        _moveDir = dirForward + dirRight;
+        
+        _moveDir.y = rigid.velocity.y;
+        
+        rigid.velocity = _moveDir;
+    }
 
-        Vector3 dir = camForward.normalized * _moveInputDelta.y + camRight.normalized * _moveInputDelta.x;
-        
-        dir.y = rigid.velocity.y;
-        
-        rigid.velocity = dir;
+
+    void Jump()
+    {
+        if (_isJumping == false)
+        {
+            if (IsGrounded())
+            {
+                StartCoroutine(JumpCoroutine());
+            }
+        }
     }
     
     void Rotation()
@@ -65,5 +86,28 @@ public class PlayerController : MonoBehaviour
             
             transform.eulerAngles = playerRot;
         }
+    }
+    
+    bool IsGrounded()
+    {
+        float height = 0.001f;
+    
+        Vector3 bottomPos = transform.position - new Vector3(0, coll.bounds.extents.y, 0);
+        
+        Vector3 point1 = bottomPos + Vector3.up * height;
+        Vector3 point2 = bottomPos - Vector3.up * height;
+
+        return Physics.CheckCapsule(point1, point2,  coll.radius, groundLayer);
+    }
+
+    IEnumerator JumpCoroutine()
+    {
+        _isJumping = true;
+        
+        rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(0.5f);
+
+        _isJumping = false;
     }
 }
