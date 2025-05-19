@@ -123,6 +123,74 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &133517065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 133517068}
+  - component: {fileID: 133517067}
+  - component: {fileID: 133517066}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &133517066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133517065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &133517067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133517065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &133517068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133517065}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &231015565
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,7 +692,7 @@ GameObject:
   - component: {fileID: 1972696195}
   - component: {fileID: 1972696194}
   - component: {fileID: 1972696196}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -733,10 +801,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 1972696195}
+  coll: {fileID: 1972696190}
   cameraContainer: {fileID: 782920449}
-  moveSpeed: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 55
+  defaultMoveSpeed: 0.1
+  jumpForce: 200
+  airMoveSpeedRate: 0.3
+  maxJumpChargeTime: 0.5
   moveInputChannel: {fileID: 11400000, guid: d9554cf692546dc40aae21fbc417dfbd, type: 2}
-  jumpInputChannel: {fileID: 11400000, guid: d9554cf692546dc40aae21fbc417dfbd, type: 2}
+  jumpStartInputChannel: {fileID: 11400000, guid: 01c682c228d3e76448a48a18645a0d1b, type: 2}
+  jumpEndInputChannel: {fileID: 11400000, guid: 917a69b6ad1245a41afe4990fcc44556, type: 2}
 --- !u!54 &1972696195
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -834,6 +910,8 @@ MonoBehaviour:
   moveInputChannel: {fileID: 11400000, guid: d9554cf692546dc40aae21fbc417dfbd, type: 2}
   lookInputChannel: {fileID: 11400000, guid: e3fd3681aa032bf468f6c633771ad06d, type: 2}
   zoomInputChannel: {fileID: 11400000, guid: 2106b83520ea5d14584e00157706b50d, type: 2}
+  jumpStartInputChannel: {fileID: 11400000, guid: 01c682c228d3e76448a48a18645a0d1b, type: 2}
+  jumpEndInputChannel: {fileID: 11400000, guid: 917a69b6ad1245a41afe4990fcc44556, type: 2}
 --- !u!114 &2053010705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,6 +985,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 16dc3a0f-c724-49e6-bc7f-de0a6f9ba380
     m_ActionName: Player/Zoom[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2053010704}
+        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
+        m_MethodName: OnJumpInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 21f42d05-5fb5-4a49-9cb3-ed874d768333
+    m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -922,3 +1016,4 @@ SceneRoots:
   - {fileID: 2053010703}
   - {fileID: 952759369}
   - {fileID: 231015566}
+  - {fileID: 133517068}

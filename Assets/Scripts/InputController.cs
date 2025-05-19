@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private PlayerInput playerInput;
 
     [Space(10f)]
@@ -11,8 +13,10 @@ public class InputController : MonoBehaviour
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpInputChannel;
+    [SerializeField] private VoidEventChannelSO jumpStartInputChannel;
+    [SerializeField] private VoidEventChannelSO jumpEndInputChannel;
 
+    
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -35,9 +39,13 @@ public class InputController : MonoBehaviour
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Started)
+        switch (context.phase)
         {
-            jumpInputChannel.Raise();
+            case InputActionPhase.Started : 
+                jumpStartInputChannel.Raise(); break;
+            case InputActionPhase.Canceled : 
+                jumpEndInputChannel.Raise(); break;
         }
     }
+
 }
