@@ -9,21 +9,17 @@ public class PlayerCameraController : MonoBehaviour
 
     
     [Space(10f)] 
-    [Header("Look")] 
+    [Header("Setting")] 
     [SerializeField] private float minLookAngleX;
     [SerializeField] private float maxLookAngleX;
-    [SerializeField] private float lookSensitivity;
-
-    private Vector2 _lookInputAngle;
-    
     
     [Space(10f)]
-    [Header("Zoom")] 
-    [SerializeField] private float minZoomDist;
-    [SerializeField] private float maxZoomDist;
+    [SerializeField] private float minLookDist;
+    [SerializeField] private float maxLookDist;
+    
+    [Space(10f)]
+    [SerializeField] private float lookSensitivity;
     [SerializeField] private float zoomSensitivity;
-
-    private float _camDistance = 3f;
 
     
     [Space(10f)]
@@ -32,29 +28,35 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
 
     
+    private float _camDist = 3f;
+    private float _zoomDelta;
+    private float _camObstacleDist;
+
+    private Vector2 _lookInputAngle;
+
     
     private void Start()
     {
-        lookInputChannel.OnEventRasied += SetLookInputAngle;
+        lookInputChannel.OnEventRasied += UpdateLookInputAngle;
         zoomInputChannel.OnEventRasied += Zoom;
     }
-    
-    
+
+
     private void LateUpdate()
     {
-        Move();
+        UpdateObstacleDist();
+        UpdatePos();
     }
     
 
     private void OnDestroy()
     {
-        lookInputChannel.OnEventRasied -= SetLookInputAngle;
+        lookInputChannel.OnEventRasied -= UpdateLookInputAngle;
         zoomInputChannel.OnEventRasied -= Zoom;
     }
     
     
-    
-    void SetLookInputAngle(Vector2 inputDelta)
+    void UpdateLookInputAngle(Vector2 inputDelta)
     {
         float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
         float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
@@ -63,22 +65,38 @@ public class PlayerCameraController : MonoBehaviour
         
         _lookInputAngle = new Vector2(clampAngleX, angleY);
     }
-    
 
 
-    void Move()
+    void UpdatePos()
     {
         cameraContainer.eulerAngles = _lookInputAngle;
-     
-        cameraContainer.position = transform.position - cameraContainer.forward * _camDistance;
+
+        _camDist = Mathf.Clamp(_camDist, minLookDist, maxLookDist);
+
+        float totalDist = _camDist - _camObstacleDist;
+        
+        cameraContainer.position = transform.position - cameraContainer.forward * totalDist;
     }
-    
-    
 
-    void Zoom(Vector2 inputDelta)
+
+    void Zoom(Vector2 inputDelta) =>  _camDist += inputDelta.y * zoomSensitivity * -1f;
+   
+
+    void UpdateObstacleDist()
     {
-        _camDistance += inputDelta.y * zoomSensitivity * -1f;
+        Vector3 dir = cameraContainer.position - transform.position;
+        
+        Ray ray = new Ray(transform.position, dir.normalized);
 
-        _camDistance = Mathf.Clamp(_camDistance, minZoomDist, maxZoomDist);
+        if (Physics.Raycast(ray, out RaycastHit hit, _camDist))
+        {
+            float distToHit = Vector3.Distance(transform.position, hit.point);
+            
+            _camObstacleDist = Mathf.Clamp(_camDist - distToHit, 0f, _camDist);
+        }
+        else
+        {
+            _camObstacleDist = 0;
+        }
     }
 }
