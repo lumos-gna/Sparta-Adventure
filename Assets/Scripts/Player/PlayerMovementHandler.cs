@@ -17,19 +17,19 @@ public class PlayerMovementHandler : MonoBehaviour
     
     [Space(5f)]
     [SerializeField] private float jumpForce;
-    [SerializeField] private float airMoveSpeedRate;
     
     
     [Space(10f)]
     [Header("Events")]
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
     [SerializeField] private VoidEventChannelSO jumpInputChannel;
+    [SerializeField] private VoidEventChannelSO onJumpChannel;
 
 
     private float _moveSpeed;
     
-    private bool _isJumping;
     private bool _isGrounded;
+    private bool _isClimb;
     
     private Vector2 _moveInputDelta;
     private Vector3 _moveDir;
@@ -51,11 +51,12 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         _isGrounded = IsGrounded();
         
-        _moveSpeed = _isGrounded? defaultMoveSpeed : defaultMoveSpeed * airMoveSpeedRate;
-        
         Move();
 
-        Rotation();
+        if (!_isClimb)
+        {
+            Rotation();
+        }
     }
 
     private void OnDestroy()
@@ -63,29 +64,58 @@ public class PlayerMovementHandler : MonoBehaviour
         moveInputChannel.OnEventRaised -= UpdateMoveInputDir;
         jumpInputChannel.OnEventRaised -= Jump;
     }
+
+    public void SetClimb(bool isActive)
+    {
+        _isClimb = isActive;
+        rigid.useGravity = !isActive;
+        
+        Vector3 vel = rigid.velocity;
+
+        vel.y = 0;
+            
+        rigid.velocity = vel;
+    }
+    
+    
     
     void UpdateMoveInputDir(Vector2 inputDir) => _moveInputDelta = inputDir;
 
     
     void Move()
     {
-        Vector3 dirForward = cameraContainer.forward *  _moveInputDelta.y;
-        Vector3 dirRight = cameraContainer.right *  _moveInputDelta.x;
-
-        _moveDir = dirForward + dirRight;
-
-        _moveDir.y = 0;
+        if (_isClimb)
+        {
+            Vector3 dirForward = transform.up *  _moveInputDelta.y;
+            Vector3 dirRight = transform.right *  _moveInputDelta.x;
+            
+            _moveDir = (dirForward + dirRight) * _moveSpeed;
+        }
+        else
+        {
+            Vector3 dirForward = cameraContainer.forward *  _moveInputDelta.y;
+            Vector3 dirRight = cameraContainer.right *  _moveInputDelta.x;
+            
+            _moveDir = (dirForward + dirRight) * _moveSpeed;
+            
+            _moveDir.y = rigid.velocity.y;
+        }
+    
         
-        _moveDir.Normalize();
-        
-        rigid.MovePosition(rigid.position + _moveDir * _moveSpeed);
+        rigid.velocity = _moveDir;
     }
 
     void Jump()
     {
-        if (_isJumping == false)
+        if (_isGrounded)
         {
-            StartCoroutine(JumpCoroutine());
+            Vector3 velocity = rigid.velocity;
+            velocity.y = 0;
+            rigid.velocity = velocity;
+        
+            rigid.AddForce(transform.up * jumpForce , ForceMode.Impulse);
+            
+            onJumpChannel.Raise();
         }
     }
 
@@ -112,23 +142,5 @@ public class PlayerMovementHandler : MonoBehaviour
         Vector3 point2 = bottomPos - new Vector3(0, height, 0);
 
         return Physics.CheckCapsule(point1, point2,  coll.radius, groundLayer);
-    }
-
-
-    IEnumerator JumpCoroutine()
-    {
-        _isJumping = true;
-        
-        Vector3 velocity = rigid.velocity;
-        velocity.y = 0;
-        rigid.velocity = velocity;
-        
-        rigid.AddForce(transform.up * jumpForce , ForceMode.Impulse);
-        
-        yield return new WaitForSeconds(0.33f);
-        
-        yield return new WaitUntil(() => _isGrounded);
-
-        _isJumping = false;
     }
 }

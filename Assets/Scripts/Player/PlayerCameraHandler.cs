@@ -91,7 +91,6 @@ public class PlayerCameraHandler : MonoBehaviour
         Vector3 camPos = PlayerPos - cameraContainer.forward * totalDist;
 
         cameraContainer.position = camPos;
-        
     }
 
 

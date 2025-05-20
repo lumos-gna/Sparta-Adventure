@@ -12,7 +12,7 @@ public class InteractionGuideUI : MonoBehaviour
 
    [SerializeField] private RectTransform[] updateRectTransforms;
 
-   [Space(5f)]
+   [Space(10f)]
    [SerializeField] private TextMeshProUGUI messageInfoText;
    [SerializeField] private TextMeshProUGUI keyInfoText;
 
