@@ -10,6 +10,9 @@ public class PlayerCameraController : MonoBehaviour
     
     [Space(10f)] 
     [Header("Setting")] 
+    [SerializeField] private float camHeight;
+    
+    [Space(10f)]
     [SerializeField] private float minLookAngleX;
     [SerializeField] private float maxLookAngleX;
     
@@ -27,14 +30,20 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
 
-    
+    private Vector3 PlayerPos =>  transform.position + Vector3.up * camHeight;
+
     private float _camDist = 3f;
     private float _zoomDelta;
     private float _camObstacleDist;
 
     private Vector2 _lookInputAngle;
 
-    
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;                  
+    }
+
     private void Start()
     {
         lookInputChannel.OnEventRaised += UpdateLookInputAngle;
@@ -42,9 +51,13 @@ public class PlayerCameraController : MonoBehaviour
     }
 
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         UpdateObstacleDist();
+    }
+
+    private void LateUpdate()
+    {
         UpdatePos();
     }
     
@@ -71,12 +84,14 @@ public class PlayerCameraController : MonoBehaviour
     {
         cameraContainer.eulerAngles = _lookInputAngle;
 
-
         _camDist = Mathf.Clamp(_camDist, minLookDist, maxLookDist);
 
         float totalDist = _camDist - _camObstacleDist;
         
-        cameraContainer.position = transform.position - cameraContainer.forward * totalDist;
+        Vector3 camPos = PlayerPos - cameraContainer.forward * totalDist;
+
+        cameraContainer.position = camPos;
+        
     }
 
 
@@ -85,13 +100,13 @@ public class PlayerCameraController : MonoBehaviour
 
     void UpdateObstacleDist()
     {
-        Vector3 dir = cameraContainer.position - transform.position;
+        Vector3 dir = cameraContainer.position - PlayerPos;
         
-        Ray ray = new Ray(transform.position, dir.normalized);
+        Ray ray = new Ray(PlayerPos, dir.normalized);
 
         if (Physics.Raycast(ray, out RaycastHit hit, _camDist))
         {
-            float hitDist = Vector3.Distance(transform.position, hit.point);
+            float hitDist = Vector3.Distance(PlayerPos, hit.point);
             
             _camObstacleDist = Mathf.Clamp(_camDist - hitDist, 0f, _camDist);
         }
