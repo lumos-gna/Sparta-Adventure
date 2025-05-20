@@ -29,6 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     private float _moveSpeed;
     
     private bool _isJumping;
+    private bool _isGrounded;
     
     private Vector2 _moveInputDelta;
     private Vector3 _moveDir;
@@ -48,6 +49,10 @@ public class PlayerMovementController : MonoBehaviour
     
     private void FixedUpdate()
     {
+        _isGrounded = IsGrounded();
+        
+        _moveSpeed = _isGrounded? defaultMoveSpeed : defaultMoveSpeed * airMoveSpeedRate;
+        
         Move();
 
         Rotation();
@@ -118,15 +123,11 @@ public class PlayerMovementController : MonoBehaviour
         velocity.y = 0;
         rigid.velocity = velocity;
         
-        rigid.AddForce((transform.up + _moveDir) * jumpForce , ForceMode.Impulse);
-        
-        _moveSpeed = defaultMoveSpeed * airMoveSpeedRate;
+        rigid.AddForce(transform.up * jumpForce , ForceMode.Impulse);
         
         yield return new WaitForSeconds(0.33f);
         
-        yield return new WaitUntil(() => IsGrounded());
-        
-        _moveSpeed = defaultMoveSpeed;
+        yield return new WaitUntil(() => _isGrounded);
 
         _isJumping = false;
     }

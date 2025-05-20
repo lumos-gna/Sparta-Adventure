@@ -5,12 +5,28 @@ using UnityEngine;
 
 public class JumpPlatform : MonoBehaviour
 {
+    [SerializeField] private LayerMask targetLayer;
+    
     [SerializeField] private float jumpForce;
+    
+    [SerializeField] private float targetTriggerVelocity;
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Rigidbody rigid))
+        if ((targetLayer.value & (1 << other.gameObject.layer)) != 0)
         {
-            rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            if (other.TryGetComponent(out Rigidbody rigid))
+            {
+                if (rigid.velocity.y < targetTriggerVelocity)
+                {
+                    Vector3 velocity = rigid.velocity;
+                    velocity.y = 0;
+                    rigid.velocity = velocity;
+            
+                    rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+                }
+            }
         }
     }
 }
