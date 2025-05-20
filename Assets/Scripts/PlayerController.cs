@@ -114,19 +114,18 @@ public class PlayerController : MonoBehaviour
     IEnumerator JumpCoroutine()
     {
         _isJumping = true;
-
+        
+        Vector3 velocity = rigid.velocity;
+        velocity.y = 0;
+        rigid.velocity = velocity;
+        
+        rigid.AddForce((transform.up + _moveDir) * jumpForce , ForceMode.Impulse);
+        
         _moveSpeed = defaultMoveSpeed * airMoveSpeedRate;
         
-        rigid.AddForce((transform.up + _moveDir) * jumpForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.33f);
         
-        yield return new WaitForSeconds(0.1f);
-
-        while (!IsGrounded())
-        {
-           
-
-            yield return null;
-        }
+        yield return new WaitUntil(() => IsGrounded());
         
         _moveSpeed = defaultMoveSpeed;
 
