@@ -1,10 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpPlatform : MonoBehaviour
+public class JumpPlatform : MonoBehaviour, IInteractable
 {
+
+    public string KeyText => "E";
+    public string DescriptionText  => "Use";
+
+    
     [SerializeField] private LayerMask targetLayer;
     
     [SerializeField] private float jumpForce;
@@ -28,5 +30,10 @@ public class JumpPlatform : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void Interact(GameObject source)
+    {
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementHandler : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody rigid;

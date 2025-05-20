@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerCameraController : MonoBehaviour
+public class PlayerCameraHandler : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Transform cameraContainer;
