@@ -1,54 +1,70 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class InteractionGuideUI : MonoBehaviour
 {
-   [SerializeField] private CanvasGroup canvasGroup;
-
-   [SerializeField] private RectTransform[] updateRectTransforms;
-
-   [Space(10f)]
-   [SerializeField] private TextMeshProUGUI messageInfoText;
-   [SerializeField] private TextMeshProUGUI keyInfoText;
-
-   
-   [Space(10f)]
    [Header("Events")]
-   [SerializeField] private InteractableEventChannelSO enterInteractableChannel;
-   [SerializeField] private InteractableEventChannelSO exitInteractableChannel;
+   [SerializeField] private InteractableEventChannelSO toggleDetectInteractableChannel;
+
+
+   private IInteractable _target;
+
+   private Camera _camera;
+   private RectTransform _rectTransform;
+   private CanvasGroup _canvasGroup;
+   
+   private void Awake()
+   {
+      _camera = Camera.main;
+      _rectTransform = GetComponent<RectTransform>();
+      _canvasGroup = GetComponent<CanvasGroup>();
+   }
 
    private void Start()
    {
-      enterInteractableChannel.OnEventRaised += ShowUI;
-      exitInteractableChannel.OnEventRaised += HideUI;
+      toggleDetectInteractableChannel.OnEventRaised += ToggleUI;
 
-      canvasGroup.alpha = 0;
+      Hide();
    }
-
+   
    private void OnDestroy()
    {
-      enterInteractableChannel.OnEventRaised -= ShowUI;
-      exitInteractableChannel.OnEventRaised -= HideUI;
+      toggleDetectInteractableChannel.OnEventRaised -= ToggleUI;
    }
-
-   void ShowUI(IInteractable interactable)
+   
+   private void Update()
    {
-      canvasGroup.alpha = 1;
-
-      messageInfoText.text = interactable.DescriptionText;
-      keyInfoText.text = interactable.KeyText;
-
-      for (int i = 0; i < updateRectTransforms.Length; i++)
+      if (_target != null)
       {
-         LayoutRebuilder.ForceRebuildLayoutImmediate(updateRectTransforms[i]);
+         _rectTransform.position = _camera.WorldToScreenPoint(_target.InfoPos);
       }
    }
 
-   void HideUI(IInteractable interactable) =>  canvasGroup.alpha = 0;
 
+   void ToggleUI(IInteractable interactable)
+   {
+      if (interactable != null)
+      {
+         Show(interactable);
+      }
+      else
+      {
+         Hide();
+      }
+   }
+   
+   void Hide()
+   {
+      _canvasGroup.alpha = 0;
+
+      _target = null;
+   }
+
+   void Show(IInteractable interactable)
+   {
+      _canvasGroup.alpha = 1;
+
+      _target = interactable;
+      
+      _rectTransform.position = _camera.WorldToScreenPoint(interactable.InfoPos);
+   }
 }

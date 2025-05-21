@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class JumpTrigger : MonoBehaviour
@@ -6,24 +7,15 @@ public class JumpTrigger : MonoBehaviour
     
     [SerializeField] private float jumpForce;
     
-    [SerializeField] private float targetTriggerVelocity;
-
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if ((targetLayer.value & (1 << other.gameObject.layer)) != 0)
+        if (other.collider.TryGetComponent(out Rigidbody rigid))
         {
-            if (other.TryGetComponent(out Rigidbody rigid))
-            {
-                if (rigid.velocity.y < targetTriggerVelocity)
-                {
-                    Vector3 velocity = rigid.velocity;
-                    velocity.y = 0;
-                    rigid.velocity = velocity;
+            Vector3 velocity = rigid.velocity;
+            velocity.y = 0;
+            rigid.velocity = velocity;
             
-                    rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-                }
-            }
+            rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
 }

@@ -1,28 +1,33 @@
 using UnityEngine;
 
-public class ClimbTrigger : MonoBehaviour
+public class ClimbTrigger : MonoBehaviour, IInteractable
 {
-    [SerializeField] private LayerMask targetLayer;
+    public Vector3 InfoPos => transform.position;
     
-    private void OnTriggerEnter(Collider other)
+
+    [SerializeField] private BoolEventChannelSO toggleClimbChannel;
+    
+    private void OnTriggerExit(Collider other)
     {
-        if ((targetLayer.value & (1 << other.gameObject.layer)) != 0)
+        if (other.TryGetComponent(out PlayerInteractHandler interactHandler))
         {
-            if (other.TryGetComponent(out PlayerMovementHandler playerMovement))
-            {
-                playerMovement.SetClimb(true);
-            }
+            toggleClimbChannel.Raise(false);
+            
+            interactHandler.EndInteract();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void Interact(GameObject source)
     {
-        if ((targetLayer.value & (1 << other.gameObject.layer)) != 0)
-        {
-            if (other.TryGetComponent(out PlayerMovementHandler playerMovement))
-            {
-                playerMovement.SetClimb(false);
-            }
-        }
+        source.transform.rotation = Quaternion.LookRotation(-transform.forward);
+
+        
+        Vector3 targetPosition = transform.position - transform.forward;
+
+        targetPosition.y = source.transform.position.y;
+
+        source.transform.position = targetPosition;
+        
+        toggleClimbChannel.Raise(true);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerCameraHandler : MonoBehaviour
 {
-    [Header("Components")]
     [SerializeField] private Transform cameraContainer;
 
     
@@ -30,11 +29,12 @@ public class PlayerCameraHandler : MonoBehaviour
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
 
-    private Vector3 PlayerPos =>  transform.position + Vector3.up * camHeight;
 
     private float _camDist = 3f;
     private float _zoomDelta;
     private float _camObstacleDist;
+    
+    private Vector3 PlayerPos =>  transform.position + Vector3.up * camHeight;
 
     private Vector2 _lookInputAngle;
 
@@ -71,12 +71,15 @@ public class PlayerCameraHandler : MonoBehaviour
     
     void UpdateLookInputAngle(Vector2 inputDelta)
     {
-        float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
-        float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
+        if (inputDelta != Vector2.zero)
+        {
+            float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
+            float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
         
-        float clampAngleX = Mathf.Clamp(angleX, minLookAngleX, maxLookAngleX);
+            float clampAngleX = Mathf.Clamp(angleX, minLookAngleX, maxLookAngleX);
         
-        _lookInputAngle = new Vector2(clampAngleX, angleY);
+            _lookInputAngle = new Vector2(clampAngleX, angleY);
+        }
     }
 
 

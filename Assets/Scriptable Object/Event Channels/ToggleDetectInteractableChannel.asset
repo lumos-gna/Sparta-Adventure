@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9fc4162082677b45a13f28cdb23c7c6, type: 3}
-  m_Name: ExitInteractableChannel
+  m_Name: ToggleDetectInteractableChannel
   m_EditorClassIdentifier: 

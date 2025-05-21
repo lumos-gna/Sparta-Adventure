@@ -6,12 +6,14 @@ public class InputController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private PlayerInput playerInput;
 
+    
     [Space(10f)]
     [Header("Events")]
     [SerializeField] private Vector2EventChannelSO moveInputChannel;
     [SerializeField] private Vector2EventChannelSO lookInputChannel;
     [SerializeField] private Vector2EventChannelSO zoomInputChannel;
     [SerializeField] private VoidEventChannelSO jumpInputChannel;
+    [SerializeField] private VoidEventChannelSO interactInputChannel;
 
     
     private void Awake()
@@ -31,8 +33,10 @@ public class InputController : MonoBehaviour
         }
     }
 
-    public void OnLookInput(InputAction.CallbackContext context) => lookInputChannel.Raise(context.ReadValue<Vector2>());
-    public void OnZoomInput(InputAction.CallbackContext context) => zoomInputChannel.Raise(context.ReadValue<Vector2>());
+    public void OnLookInput(InputAction.CallbackContext context) 
+        => lookInputChannel.Raise(context.ReadValue<Vector2>());
+    public void OnZoomInput(InputAction.CallbackContext context) 
+        => zoomInputChannel.Raise(context.ReadValue<Vector2>());
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
@@ -40,6 +44,15 @@ public class InputController : MonoBehaviour
         {
             case InputActionPhase.Started : 
                 jumpInputChannel.Raise(); break;
+        }
+    }
+
+    public void OnInteractInput(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Started : 
+                interactInputChannel.Raise(); break;
         }
     }
 }
