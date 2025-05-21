@@ -5,18 +5,21 @@ using UnityEngine.UI;
 public class ConditionUI : MonoBehaviour
 {
     [SerializeField] private Image staminaBar;
+    [SerializeField] private Image healthBar;
 
-    [Space(10f)] [SerializeField] private FloatEventChannelSO changedStaminaChannel;
+    private PlayerConditionHandler _playerConditionHandler;
 
     private void Start()
     {
-        changedStaminaChannel.OnEventRaised += UpdateStaminaBar;
+        _playerConditionHandler = FindAnyObjectByType<PlayerConditionHandler>();
     }
 
-    private void OnDestroy()
+    private void Update()
     {
-        changedStaminaChannel.OnEventRaised -= UpdateStaminaBar;
+        if (_playerConditionHandler != null)
+        {
+            healthBar.fillAmount = _playerConditionHandler.CurHealth / _playerConditionHandler.MaxHealth;
+            staminaBar.fillAmount = _playerConditionHandler.CurStamina / _playerConditionHandler.MaxStamina;
+        }
     }
-
-    void UpdateStaminaBar(float ratio) => staminaBar.fillAmount = ratio;
 }

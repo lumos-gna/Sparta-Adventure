@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteractHandler : MonoBehaviour
 {
@@ -7,10 +7,7 @@ public class PlayerInteractHandler : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float detectDistance;
     
-    [Space(10f)]
-    [Header("Events")]
-    [SerializeField] private VoidEventChannelSO interactInputChannel;
-    
+   
     [Space(5f)]
     [SerializeField] private InteractableEventChannelSO toggleDetectedInteractableChannel;
 
@@ -25,17 +22,6 @@ public class PlayerInteractHandler : MonoBehaviour
     {
         _camera = Camera.main;
     }
-
-    private void Start()
-    {
-        interactInputChannel.OnEventRaised += StartInteract;
-    }
-
-    private void OnDestroy()
-    {
-        interactInputChannel.OnEventRaised -= StartInteract;
-    }
-
 
     private void Update()
     {
@@ -69,16 +55,18 @@ public class PlayerInteractHandler : MonoBehaviour
         }
     }
 
-
-    public void StartInteract()
+    public void OnInteractInput(InputAction.CallbackContext context)
     {
-        if (!_isInteracting && _curInteractTarget != null)
+        if (context.phase == InputActionPhase.Started)
         {
-            _isInteracting = true;
+            if (!_isInteracting && _curInteractTarget != null)
+            {
+                _isInteracting = true;
 
-            _curInteractTarget.Interact(gameObject);
+                _curInteractTarget.Interact(gameObject);
             
-            toggleDetectedInteractableChannel.Raise(null);
+                toggleDetectedInteractableChannel.Raise(null);
+            }
         }
     }
 

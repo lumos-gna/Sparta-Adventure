@@ -1,12 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RazerObstacle : MonoBehaviour
 {
     [SerializeField] private LineRenderer[] renderers;
     [SerializeField] private float forcePower;
+    [SerializeField] private float damage;
+    
+    [Space(10f)]
+    [SerializeField] private FloatEventChannelSO takeDamagedChannel;
 
     private void Update()
     {
@@ -28,6 +29,8 @@ public class RazerObstacle : MonoBehaviour
                     rigid.velocity =  Vector3.zero;
                     
                     rigid.AddForce(transform.forward.normalized * forcePower, ForceMode.Impulse);
+                    
+                    takeDamagedChannel.Raise(damage);
                 }
             }
         }

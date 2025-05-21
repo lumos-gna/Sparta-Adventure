@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCameraHandler : MonoBehaviour
 {
@@ -23,12 +22,6 @@ public class PlayerCameraHandler : MonoBehaviour
     [SerializeField] private float lookSensitivity;
     [SerializeField] private float zoomSensitivity;
 
-    
-    [Space(10f)]
-    [Header("Events")]
-    [SerializeField] private Vector2EventChannelSO lookInputChannel;
-    [SerializeField] private Vector2EventChannelSO zoomInputChannel;
-
 
     private float _camDist = 3f;
     private float _zoomDelta;
@@ -44,13 +37,6 @@ public class PlayerCameraHandler : MonoBehaviour
         Cursor.visible = false;                  
     }
 
-    private void Start()
-    {
-        lookInputChannel.OnEventRaised += UpdateLookInputAngle;
-        zoomInputChannel.OnEventRaised += Zoom;
-    }
-
-
     private void FixedUpdate()
     {
         UpdateObstacleDist();
@@ -60,19 +46,13 @@ public class PlayerCameraHandler : MonoBehaviour
     {
         UpdatePos();
     }
-    
 
-    private void OnDestroy()
+    public void OnLookInput(InputAction.CallbackContext context)
     {
-        lookInputChannel.OnEventRaised -= UpdateLookInputAngle;
-        zoomInputChannel.OnEventRaised -= Zoom;
-    }
-    
-    
-    void UpdateLookInputAngle(Vector2 inputDelta)
-    {
-        if (inputDelta != Vector2.zero)
+        if (context.phase == InputActionPhase.Performed)
         {
+            var inputDelta = context.ReadValue<Vector2>();
+            
             float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
             float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
         
@@ -82,6 +62,16 @@ public class PlayerCameraHandler : MonoBehaviour
         }
     }
 
+    public void OnZoomInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            var inputDelta = context.ReadValue<Vector2>();
+            
+            _camDist += inputDelta.y * zoomSensitivity * -1f;
+        }
+    }
+    
 
     void UpdatePos()
     {
@@ -96,9 +86,6 @@ public class PlayerCameraHandler : MonoBehaviour
         cameraContainer.position = camPos;
     }
 
-
-    void Zoom(Vector2 inputDelta) =>  _camDist += inputDelta.y * zoomSensitivity * -1f;
-   
 
     void UpdateObstacleDist()
     {

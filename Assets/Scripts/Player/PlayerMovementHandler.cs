@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : MonoBehaviour
 {
@@ -17,10 +18,8 @@ public class PlayerMovementHandler : MonoBehaviour
     
     [Space(10f)]
     [Header("Events")]
-    [SerializeField] private Vector2EventChannelSO moveInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpInputChannel;
-    [SerializeField] private VoidEventChannelSO jumpedChannel;
     [SerializeField] private BoolEventChannelSO toggleClimbChannel;
+    [SerializeField] private VoidEventChannelSO jumpedChannel;
 
 
     private float _moveSpeed;
@@ -49,15 +48,11 @@ public class PlayerMovementHandler : MonoBehaviour
 
     private void Start()
     {
-        moveInputChannel.OnEventRaised += UpdateMoveInputDir;
-        jumpInputChannel.OnEventRaised += Jump;
         toggleClimbChannel.OnEventRaised += SetClimb;
     }
     
     private void OnDestroy()
     {
-        moveInputChannel.OnEventRaised -= UpdateMoveInputDir;
-        jumpInputChannel.OnEventRaised -= Jump;
         toggleClimbChannel.OnEventRaised -= SetClimb;
     }
     
@@ -73,6 +68,24 @@ public class PlayerMovementHandler : MonoBehaviour
         }
     }
 
+    public void OnMoveInput(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed : 
+                _moveInputDelta = context.ReadValue<Vector2>(); break;
+            case InputActionPhase.Canceled :
+                _moveInputDelta = Vector2.zero; break;
+        }
+    }
+    
+    public void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            Jump();
+        }
+    }
   
 
     void SetClimb(bool isActive)
@@ -109,8 +122,6 @@ public class PlayerMovementHandler : MonoBehaviour
         return moveDir;
     }
     
-    void UpdateMoveInputDir(Vector2 inputDir) => _moveInputDelta = inputDir;
-
 
     void Jump()
     {
