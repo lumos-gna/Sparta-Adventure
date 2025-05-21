@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class JumpTrigger : MonoBehaviour
 {
-    [SerializeField] private LayerMask targetLayer;
-    
     [SerializeField] private float jumpForce;
-    
-    private void OnCollisionEnter(Collision other)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.TryGetComponent(out Rigidbody rigid))
+        if (other.TryGetComponent(out Rigidbody rigid))
         {
             Vector3 velocity = rigid.velocity;
             velocity.y = 0;
@@ -18,4 +16,5 @@ public class JumpTrigger : MonoBehaviour
             rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
+
 }
