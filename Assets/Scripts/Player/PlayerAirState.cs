@@ -17,6 +17,8 @@ public class PlayerAirState : IPlayerState
 
     public void FixedUpdate()
     {
+        _controller.MovementHandler.AirMove();
+        
         _controller.MovementHandler.RotationToCamera();
     }
 

@@ -10,6 +10,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [Space(10f)]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float defaultMoveSpeed;
+    [SerializeField] private float airMoveSpeedRate;
     
     [Space(5f)]
     [SerializeField] private float jumpForce;
@@ -74,7 +75,6 @@ public class PlayerMovementHandler : MonoBehaviour
     
     public void BasicMove()
     {
-        
         Vector2 inputDelta = _controller.MoveInputDelta;
         
         Vector3 moveDir = (cameraContainer.forward * inputDelta.y) + (cameraContainer.right * inputDelta.x);
@@ -100,8 +100,32 @@ public class PlayerMovementHandler : MonoBehaviour
         
         _rigid.velocity = velocity;
     }
+
+
+    public void AirMove()
+    {
+        Vector2 inputDelta = _controller.MoveInputDelta;
+        
+        Vector3 moveDir = (cameraContainer.forward * inputDelta.y) + (cameraContainer.right * inputDelta.x);
+
+        moveDir.y = 0;
+
+
+        Vector3 curVelocity = _rigid.velocity;
+
+        curVelocity.y = 0;
+        
+        float curSpeed = Vector3.Dot(curVelocity, moveDir);
+
+        float airSpeed = _moveSpeed * airMoveSpeedRate;
+        
+        if (curSpeed < airSpeed)
+        {
+            _rigid.AddForce(moveDir * airSpeed, ForceMode.Impulse);
+        }
+
+    }
     
-   
 
     public void Jump()
     {
@@ -122,9 +146,9 @@ public class PlayerMovementHandler : MonoBehaviour
   
     public bool IsGrounded()
     {
-        float height = 0.001f;
+        float height = 0.00f;
         
-        Vector3 bottomPos = transform.position - new Vector3(0, _collider.bounds.extents.y, 0);
+        Vector3 bottomPos = transform.position - new Vector3(0, _collider.bounds.extents.y - 0.3f, 0);
 
         Vector3 point1 = bottomPos + new Vector3(0, height, 0);
         Vector3 point2 = bottomPos - new Vector3(0, height, 0);

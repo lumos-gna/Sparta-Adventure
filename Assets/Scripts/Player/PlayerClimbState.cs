@@ -30,7 +30,7 @@ public class PlayerClimbState : IPlayerState
 
     public void LateUpdate()
     {
-        if (!_controller.MovementHandler.IsGrounded())
+        if (_controller.MovementHandler.IsGrounded())
         {
             _controller.ChangeState(IPlayerState.Type.Basic);
 

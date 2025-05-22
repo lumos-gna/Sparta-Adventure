@@ -16,6 +16,7 @@ public class PlayerBasicState : IPlayerState
     public void FixedUpdate()
     {
         _controller.MovementHandler.BasicMove();
+        
         _controller.MovementHandler.RotationToCamera();
         
         _controller.InteractHandler.DetectInteractable();
