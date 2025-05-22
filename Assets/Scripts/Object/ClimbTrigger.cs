@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class ClimbTrigger : MonoBehaviour, IInteractable
 {
-    public Vector3 InfoPos => transform.position;
+    public bool IsInteractable { get; }
+    public Vector3 InteractInfoPos => transform.position;
     
 
     [SerializeField] private BoolEventChannelSO toggleClimbChannel;

@@ -1,70 +1,40 @@
+using System;
 using UnityEngine;
 
 public class InteractionGuideUI : MonoBehaviour
 {
-   [Header("Events")]
-   [SerializeField] private InteractableEventChannelSO toggleDetectInteractableChannel;
-
-
-   private IInteractable _target;
-
-   private Camera _camera;
    private RectTransform _rectTransform;
    private CanvasGroup _canvasGroup;
    
+   private Camera _camera;
+   private PlayerInteractHandler _interactHandler;
+   
    private void Awake()
    {
-      _camera = Camera.main;
       _rectTransform = GetComponent<RectTransform>();
       _canvasGroup = GetComponent<CanvasGroup>();
+      
+      _canvasGroup.alpha = 0;
    }
 
    private void Start()
    {
-      toggleDetectInteractableChannel.OnEventRaised += ToggleUI;
+      _camera = Camera.main;
 
-      Hide();
+      _interactHandler = FindAnyObjectByType<PlayerInteractHandler>();
    }
    
-   private void OnDestroy()
+   private void LateUpdate()
    {
-      toggleDetectInteractableChannel.OnEventRaised -= ToggleUI;
-   }
-   
-   private void Update()
-   {
-      if (_target != null)
+      if (_interactHandler.CurTarget != null)
       {
-         _rectTransform.position = _camera.WorldToScreenPoint(_target.InfoPos);
-      }
-   }
-
-
-   void ToggleUI(IInteractable interactable)
-   {
-      if (interactable != null)
-      {
-         Show(interactable);
+         _rectTransform.position = _camera.WorldToScreenPoint(_interactHandler.CurTarget.InteractInfoPos);
+         
+         _canvasGroup.alpha = 1;
       }
       else
       {
-         Hide();
+         _canvasGroup.alpha = 0;
       }
-   }
-   
-   void Hide()
-   {
-      _canvasGroup.alpha = 0;
-
-      _target = null;
-   }
-
-   void Show(IInteractable interactable)
-   {
-      _canvasGroup.alpha = 1;
-
-      _target = interactable;
-      
-      _rectTransform.position = _camera.WorldToScreenPoint(interactable.InfoPos);
    }
 }

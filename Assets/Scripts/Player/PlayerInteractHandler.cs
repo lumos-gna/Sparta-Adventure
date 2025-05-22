@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class PlayerInteractHandler : MonoBehaviour
 {
+    public IInteractable CurTarget { get; private set; }
+
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float detectDistance;
    
-    [Space(10f)]
-    [SerializeField] private InteractableEventChannelSO toggleDetectedInteractableChannel;
-
 
     private bool _isInteracting;
-    
-    private IInteractable _curInteractTarget;
     
     private Camera _camera;
 
@@ -23,15 +20,21 @@ public class PlayerInteractHandler : MonoBehaviour
 
     public void Interact()
     {
-        if (!_isInteracting && _curInteractTarget != null)
+        if (!_isInteracting && CurTarget != null)
         {
             _isInteracting = true;
 
-            _curInteractTarget.Interact(gameObject);
-            
-            toggleDetectedInteractableChannel.Raise(null);
+            CurTarget.Interact(gameObject);
         }
     }
+    
+    public void EndInteract()
+    {
+        _isInteracting = false;
+
+        CurTarget = null;
+    }
+
 
     public void DetectInteractable()
     {
@@ -41,34 +44,18 @@ public class PlayerInteractHandler : MonoBehaviour
 
         float detectDist = Mathf.Abs(transform.position.z - _camera.transform.position.z) + detectDistance;
         
-        if (Physics.Raycast(ray, out RaycastHit hit, detectDist, targetLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, detectDist))
         {
             if (hit.collider.TryGetComponent(out IInteractable interactable))
             {
-                if (_curInteractTarget != interactable)
-                {
-                    _curInteractTarget = interactable;
-
-                    toggleDetectedInteractableChannel.Raise(_curInteractTarget);
-                }
+                CurTarget = interactable;
+                
+                return;
             }
         }
-        else
-        {
-            if (_curInteractTarget != null)
-            {
-                _curInteractTarget = null;
 
-                toggleDetectedInteractableChannel.Raise(null);
-            }
-        }
+        CurTarget = null;
     }
 
-    public void EndInteract()
-    {
-        _isInteracting = false;
-
-        _curInteractTarget = null;
-    }
-        
+  
 }

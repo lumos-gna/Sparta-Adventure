@@ -131,28 +131,17 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         Vector2 inputDelta = _controller.MoveInputDelta;
 
-        Vector3 velocity = _rigid.velocity;
-
-        velocity.y = 0;
+        Vector3 jumpDir = new Vector3(inputDelta.x, 0, inputDelta.y) + Vector3.up * 4f;
         
-        _rigid.velocity = velocity;
-
-        Vector3 jumpDir = new Vector3(inputDelta.x, 0, inputDelta.y) + transform.up;
-        
-        _rigid.AddForce(jumpDir * jumpForce , ForceMode.Impulse);
+        _rigid.AddForce(jumpDir.normalized * jumpForce , ForceMode.Impulse);
             
         jumpedChannel.Raise();
     }
   
     public bool IsGrounded()
     {
-        float height = 0.00f;
-        
-        Vector3 bottomPos = transform.position - new Vector3(0, _collider.bounds.extents.y - 0.3f, 0);
-
-        Vector3 point1 = bottomPos + new Vector3(0, height, 0);
-        Vector3 point2 = bottomPos - new Vector3(0, height, 0);
-
-        return Physics.CheckCapsule(point1, point2,  _collider.radius, groundLayer);
+        Vector3 checkPos = transform.position - new Vector3(0, _collider.bounds.extents.y - 0.3f, 0);
+     
+        return Physics.CheckSphere(checkPos, _collider.radius * 0.9f, groundLayer);
     }
 }

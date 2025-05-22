@@ -2,6 +2,7 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    public Vector3 InfoPos { get; }
+    public bool IsInteractable { get;}
+    public Vector3 InteractInfoPos { get; }
     public void Interact(GameObject source);
 }
