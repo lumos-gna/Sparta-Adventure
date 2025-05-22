@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : MonoBehaviour
 {
-  
     [SerializeField] private Transform cameraContainer;
 
     [Space(10f)]
@@ -17,7 +15,6 @@ public class PlayerMovementHandler : MonoBehaviour
     
     
     [Space(10f)]
-    [SerializeField] private BoolEventChannelSO toggleClimbChannel;
     [SerializeField] private VoidEventChannelSO jumpedChannel;
 
     
@@ -36,16 +33,6 @@ public class PlayerMovementHandler : MonoBehaviour
         _controller = GetComponent<PlayerController>();
         
         _moveSpeed = defaultMoveSpeed;
-    }
-
-    private void Start()
-    {
-        toggleClimbChannel.OnEventRaised += InitClimbState;
-    }
-    
-    private void OnDestroy()
-    {
-        toggleClimbChannel.OnEventRaised -= InitClimbState;
     }
     
     
@@ -85,17 +72,15 @@ public class PlayerMovementHandler : MonoBehaviour
         
         _rigid.velocity = velocity;
     }
-    
-    
+
     public void ClimbMove()
     {
         Vector2 inputDelta = _controller.MoveInputDelta;
         
-        Vector3 moveDir = transform.up * inputDelta.y;
+        Vector3 moveDir = (transform.up * inputDelta.y) + (transform.right * inputDelta.x);
         
         Vector3 velocity =  moveDir * _moveSpeed;
 
-        velocity.x = 0;
         velocity.z = 0;
         
         _rigid.velocity = velocity;

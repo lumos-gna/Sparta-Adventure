@@ -1,34 +1,44 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class ClimbTrigger : MonoBehaviour, IInteractable
+public class ClimbTrigger : MonoBehaviour
 {
-    public bool IsInteractable { get; }
     public Vector3 InteractInfoPos => transform.position;
-    
 
-    [SerializeField] private BoolEventChannelSO toggleClimbChannel;
-    
-    private void OnTriggerExit(Collider other)
+    private PlayerController _player;
+
+    private BoxCollider _collider;
+
+    private void Awake()
     {
-        if (other.TryGetComponent(out PlayerInteractHandler interactHandler))
-        {
-            toggleClimbChannel.Raise(false);
-            
-            interactHandler.EndInteract();
-        }
+        _collider = GetComponent<BoxCollider>();
     }
 
-    public void Interact(GameObject source)
+    private void OnTriggerExit(Collider other)  
     {
-        source.transform.rotation = Quaternion.LookRotation(-transform.forward);
-
-        
-        Vector3 targetPosition = transform.position - transform.forward;
-
-        targetPosition.y = source.transform.position.y;
-
-        source.transform.position = targetPosition;
-        
-        toggleClimbChannel.Raise(true);
+        if (_player != null)
+        {
+            if (other.gameObject == _player.gameObject)
+            {
+                _player.ChangeState(IPlayerState.Type.Basic);
+                _player = null;
+            }
+        }
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerController player))
+        {
+            if (player.transform.position.y < transform.position.y + _collider.bounds.extents.y)
+            {
+                _player = player;
+                
+                _player.transform.rotation = Quaternion.LookRotation(transform.forward * -1);
+                
+                _player.ChangeState(IPlayerState.Type.Climb);
+            }
+        }
     }
 }

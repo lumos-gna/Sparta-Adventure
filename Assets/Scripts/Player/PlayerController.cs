@@ -10,10 +10,11 @@ public class PlayerController : MonoBehaviour
     public bool PressedInteractInput { get; private set; }
     
     public Vector2 LookInputDelta { get; private set; }
-    
     public Vector2 ZoomInputDelta { get; private set; }
     public Vector2 MoveInputDelta { get; private set; }
 
+
+    public Rigidbody Rigidbody { get; private set; }
     public PlayerCameraHandler CameraHandler { get; private set; }
     public PlayerConditionHandler ConditionHandler { get; private set; }
     public PlayerMovementHandler MovementHandler { get; private set; }
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Rigidbody = GetComponent<Rigidbody>();
         CameraHandler = GetComponent<PlayerCameraHandler>();
         ConditionHandler = GetComponent<PlayerConditionHandler>();
         MovementHandler = GetComponent<PlayerMovementHandler>();

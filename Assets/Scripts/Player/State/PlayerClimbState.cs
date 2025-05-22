@@ -1,5 +1,7 @@
 
 
+using UnityEngine;
+
 public class PlayerClimbState : IPlayerState
 {
     private readonly PlayerController _controller;
@@ -22,27 +24,16 @@ public class PlayerClimbState : IPlayerState
 
     public void Update()
     {
-        if (_controller.PressedJumpInput)
-        {
-            _controller.MovementHandler.Jump();
-        }
     }
 
     public void LateUpdate()
     {
-        if (_controller.MovementHandler.IsGrounded())
-        {
-            _controller.ChangeState(IPlayerState.Type.Basic);
-
-            return;
-        }
-        
         _controller.CameraHandler.Handle();
         _controller.CameraHandler.Zoom();
     }
 
     public void Exit()
     {
-        _controller.MovementHandler.InitClimbState(true);
+        _controller.MovementHandler.InitClimbState(false);
     }
 }

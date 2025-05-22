@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class RazerObstacle : MonoBehaviour
@@ -9,30 +11,45 @@ public class RazerObstacle : MonoBehaviour
     [Space(10f)]
     [SerializeField] private FloatEventChannelSO takeDamagedChannel;
 
-    private void Update()
+
+    private void Start()
     {
-        for (int i = 0; i < renderers.Length; i++)
+        StartCoroutine(RazerCorutine());
+    }
+
+    IEnumerator RazerCorutine()
+    {
+        while (true)
         {
-            var line = renderers[i];
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                var line = renderers[i];
             
-            Vector3 startPos = line.transform.TransformPoint(line.GetPosition(0));
-            Vector3 endPos = line.transform.TransformPoint(line.GetPosition(1));
+                Vector3 startPos = line.transform.TransformPoint(line.GetPosition(0));
+                Vector3 endPos = line.transform.TransformPoint(line.GetPosition(1));
             
-            Vector3 dir = (endPos - startPos).normalized;
-            float dist = Vector3.Distance(startPos, endPos);
+                Vector3 dir = (endPos - startPos).normalized;
+                float dist = Vector3.Distance(startPos, endPos);
             
           
-            if (Physics.Raycast(startPos, dir, out RaycastHit hit, dist))
-            {
-                if (hit.collider.TryGetComponent(out Rigidbody rigid))
+                if (Physics.Raycast(startPos, dir, out RaycastHit hit, dist))
                 {
-                    rigid.velocity =  Vector3.zero;
+                    if (hit.collider.TryGetComponent(out Rigidbody rigid))
+                    {
+                        rigid.velocity =  Vector3.zero;
                     
-                    rigid.AddForce(transform.forward.normalized * forcePower, ForceMode.Impulse);
+                        Vector3 force = (rigid.transform.up + rigid.transform.forward * -2).normalized * forcePower;
                     
-                    takeDamagedChannel.Raise(damage);
+                        rigid.AddForce(force, ForceMode.Impulse);
+                    
+                        takeDamagedChannel.Raise(damage);
+                        
+                        yield return new WaitForSeconds(0.5f);
+                    }
                 }
             }
+
+            yield return null;
         }
     }
   

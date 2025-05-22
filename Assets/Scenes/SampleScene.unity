@@ -1099,7 +1099,7 @@ MonoBehaviour:
   - {fileID: 234560112}
   - {fileID: 282835635}
   - {fileID: 62749531}
-  forcePower: 100
+  forcePower: 600
   damage: 10
   takeDamagedChannel: {fileID: 11400000, guid: ee56f8e76ea1dd0438a30909638ab660, type: 2}
 --- !u!1 &594628971
@@ -1507,7 +1507,7 @@ GameObject:
   - component: {fileID: 828871380}
   - component: {fileID: 828871379}
   m_Layer: 2
-  m_Name: EndWall
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 923503173}
   - component: {fileID: 923503172}
   m_Layer: 2
-  m_Name: StartWall
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1932,7 +1932,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1181053971
 Transform:
   m_ObjectHideFlags: 0
@@ -2485,7 +2485,6 @@ GameObject:
   - component: {fileID: 1719083732}
   - component: {fileID: 1719083731}
   - component: {fileID: 1719083730}
-  - component: {fileID: 1719083734}
   m_Layer: 0
   m_Name: ClimbWall
   m_TagString: Untagged
@@ -2512,8 +2511,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1.06}
+  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!23 &1719083731
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2573,26 +2572,118 @@ Transform:
   m_GameObject: {fileID: 1719083729}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.92, y: 3.88, z: -14.28}
-  m_LocalScale: {x: 2.5, y: 7.72, z: 3}
+  m_LocalPosition: {x: 19.79, y: 3.88, z: -16.82}
+  m_LocalScale: {x: 2.5, y: 7.72, z: 5.39}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2097250801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1719083734
-MonoBehaviour:
+--- !u!1 &1730737879
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1719083729}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1730737883}
+  - component: {fileID: 1730737882}
+  - component: {fileID: 1730737881}
+  - component: {fileID: 1730737880}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1730737880
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730737879}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d14714431b7e0b94d8b41ae65300e583, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toggleClimbChannel: {fileID: 11400000, guid: f2d95df5bc56ba14da5fb143d993d707, type: 2}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1730737881
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730737879}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1730737882
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730737879}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1730737883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730737879}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 15.77, y: 7.15, z: -16.82}
+  m_LocalScale: {x: 5, y: 1, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1871881280
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,7 +2778,6 @@ GameObject:
   - component: {fileID: 1972696194}
   - component: {fileID: 1972696196}
   - component: {fileID: 1972696197}
-  - component: {fileID: 1972696202}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2783,7 +2873,6 @@ MonoBehaviour:
   defaultMoveSpeed: 10
   airMoveSpeedRate: 0.6
   jumpForce: 200
-  toggleClimbChannel: {fileID: 11400000, guid: f2d95df5bc56ba14da5fb143d993d707, type: 2}
   jumpedChannel: {fileID: 11400000, guid: f748e915228f1534aa6dc16c14324315, type: 2}
 --- !u!54 &1972696195
 Rigidbody:
@@ -2844,9 +2933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88ee7e7560405a46afbb85080714fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 0
   detectDistance: 5
 --- !u!114 &1972696198
 MonoBehaviour:
@@ -3014,20 +3100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 242741a66f1bae64a81cc3d27f2dcb70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1972696202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972696189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8349d335cc6cba04faca8118fd9e7542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectDist: 0
-  _collider: {fileID: 0}
 --- !u!1 &2097250800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3037,9 +3109,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2097250801}
-  - component: {fileID: 2097250805}
   - component: {fileID: 2097250804}
   - component: {fileID: 2097250803}
+  - component: {fileID: 2097250806}
+  - component: {fileID: 2097250807}
   m_Layer: 0
   m_Name: ClimbArea
   m_TagString: Untagged
@@ -3112,7 +3185,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2097250805
+--- !u!114 &2097250806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097250800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14714431b7e0b94d8b41ae65300e583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &2097250807
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3127,12 +3212,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 3.18}
+  m_Center: {x: 0, y: -0.01, z: 1.98}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3148,3 +3233,4 @@ SceneRoots:
   - {fileID: 1719083733}
   - {fileID: 548181774}
   - {fileID: 1972696193}
+  - {fileID: 1730737883}
