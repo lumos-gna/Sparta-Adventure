@@ -5,9 +5,7 @@ public class PlayerCameraHandler : MonoBehaviour
 {
     [SerializeField] private Transform cameraContainer;
 
-    
     [Space(10f)] 
-    [Header("Setting")] 
     [SerializeField] private float camHeight;
     
     [Space(10f)]
@@ -24,84 +22,70 @@ public class PlayerCameraHandler : MonoBehaviour
 
 
     private float _camDist = 3f;
-    private float _zoomDelta;
-    private float _camObstacleDist;
-    
-    private Vector3 PlayerPos =>  transform.position + Vector3.up * camHeight;
 
-    private Vector2 _lookInputAngle;
+    private Vector2 _lookInputAngle = Vector2.zero;
+
+    private PlayerController _controller;
 
     private void Awake()
     {
+        _controller = GetComponent<PlayerController>();
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;                  
     }
+ 
 
-    private void FixedUpdate()
+    public void Zoom()
     {
-        UpdateObstacleDist();
+        Vector2 inputDelta = _controller.ZoomInputDelta;
+
+        _camDist += inputDelta.y * zoomSensitivity * -1f;
     }
 
-    private void LateUpdate()
+    public void Handle()
     {
-        UpdatePos();
-    }
-
-    public void OnLookInput(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed)
-        {
-            var inputDelta = context.ReadValue<Vector2>();
-            
-            float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
-            float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
+        Vector3 inputDelta = _controller.LookInputDelta;
         
-            float clampAngleX = Mathf.Clamp(angleX, minLookAngleX, maxLookAngleX);
+        float angleX = _lookInputAngle.x + (inputDelta.y * lookSensitivity * -1f);
+        float angleY = _lookInputAngle.y + (inputDelta.x * lookSensitivity);
         
-            _lookInputAngle = new Vector2(clampAngleX, angleY);
-        }
-    }
-
-    public void OnZoomInput(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed)
-        {
-            var inputDelta = context.ReadValue<Vector2>();
-            
-            _camDist += inputDelta.y * zoomSensitivity * -1f;
-        }
-    }
-    
-
-    void UpdatePos()
-    {
+        float clampAngleX = Mathf.Clamp(angleX, minLookAngleX, maxLookAngleX);
+        
+        _lookInputAngle = new Vector2(clampAngleX, angleY);
+        
         cameraContainer.eulerAngles = _lookInputAngle;
 
         _camDist = Mathf.Clamp(_camDist, minLookDist, maxLookDist);
 
-        float totalDist = _camDist - _camObstacleDist;
+        float totalDist = _camDist - GetObstacleDist();
         
-        Vector3 camPos = PlayerPos - cameraContainer.forward * totalDist;
+        
+        Vector3 playerPos =  transform.position + Vector3.up * camHeight;
+        
+        Vector3 camPos = playerPos - cameraContainer.forward * totalDist;
 
         cameraContainer.position = camPos;
     }
 
 
-    void UpdateObstacleDist()
+    float GetObstacleDist()
     {
-        Vector3 dir = cameraContainer.position - PlayerPos;
+        Vector3 playerPos =  transform.position + Vector3.up * camHeight;
         
-        Ray ray = new Ray(PlayerPos, dir.normalized);
+        Vector3 dir = cameraContainer.position - playerPos;
+        
+        Ray ray = new Ray(playerPos, dir.normalized);
 
         if (Physics.Raycast(ray, out RaycastHit hit, _camDist))
         {
-            float hitDist = Vector3.Distance(PlayerPos, hit.point);
+            float hitDist = Vector3.Distance(playerPos, hit.point);
             
-            _camObstacleDist = Mathf.Clamp(_camDist - hitDist, 0f, _camDist);
+            return Mathf.Clamp(_camDist - hitDist, 0f, _camDist);
         }
         else
         {
-            _camObstacleDist = 0;
+            return 0;
         }
     }
 }

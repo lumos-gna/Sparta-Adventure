@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 19878548}
   - component: {fileID: 19878547}
   - component: {fileID: 19878546}
-  - component: {fileID: 19878544}
   - component: {fileID: 19878550}
+  - component: {fileID: 19878544}
   m_Layer: 0
   m_Name: SpringPlatform
   m_TagString: Untagged
@@ -588,8 +588,8 @@ GameObject:
   - component: {fileID: 231015569}
   - component: {fileID: 231015568}
   - component: {fileID: 231015567}
-  - component: {fileID: 231015570}
   - component: {fileID: 231015571}
+  - component: {fileID: 231015570}
   m_Layer: 2
   m_Name: JumpPlatform
   m_TagString: Untagged
@@ -1850,7 +1850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1181053971
 Transform:
   m_ObjectHideFlags: 0
@@ -2411,7 +2411,7 @@ Transform:
   m_LocalScale: {x: 13.62, y: 7.72, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1880464028}
+  - {fileID: 2097250801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871881280
@@ -2489,73 +2489,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871881280}
   m_CullTransparentMesh: 1
---- !u!1 &1880464027
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1880464028}
-  - component: {fileID: 1880464031}
-  - component: {fileID: 1880464030}
-  m_Layer: 0
-  m_Name: ClimbTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1880464028
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880464027}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.59}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1719083733}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1880464030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880464027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d14714431b7e0b94d8b41ae65300e583, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toggleClimbChannel: {fileID: 11400000, guid: f2d95df5bc56ba14da5fb143d993d707, type: 2}
---- !u!65 &1880464031
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880464027}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.79}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1972696189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2568,8 +2501,9 @@ GameObject:
   - component: {fileID: 1972696192}
   - component: {fileID: 1972696191}
   - component: {fileID: 1972696195}
-  - component: {fileID: 1972696190}
+  - component: {fileID: 1972696200}
   - component: {fileID: 1972696199}
+  - component: {fileID: 1972696201}
   - component: {fileID: 1972696198}
   - component: {fileID: 1972696194}
   - component: {fileID: 1972696196}
@@ -2581,29 +2515,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &1972696190
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972696189}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1972696191
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2663,7 +2574,7 @@ Transform:
   m_GameObject: {fileID: 1972696189}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.89609945, z: 0, w: 0.44385338}
-  m_LocalPosition: {x: 26.87, y: 1.27, z: -0.65}
+  m_LocalPosition: {x: 26.87, y: 1.15, z: -0.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2686,7 +2597,7 @@ MonoBehaviour:
   cameraContainer: {fileID: 782920449}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 179
   defaultMoveSpeed: 10
   jumpForce: 250
   toggleClimbChannel: {fileID: 11400000, guid: f2d95df5bc56ba14da5fb143d993d707, type: 2}
@@ -2803,8 +2714,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1972696194}
-        m_TargetAssemblyTypeName: PlayerMovementHandler, Assembly-CSharp
+      - m_Target: {fileID: 1972696201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMoveInput
         m_Mode: 0
         m_Arguments:
@@ -2819,8 +2730,8 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1972696196}
-        m_TargetAssemblyTypeName: PlayerCameraHandler, Assembly-CSharp
+      - m_Target: {fileID: 1972696201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnLookInput
         m_Mode: 0
         m_Arguments:
@@ -2835,8 +2746,8 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1972696196}
-        m_TargetAssemblyTypeName: PlayerCameraHandler, Assembly-CSharp
+      - m_Target: {fileID: 1972696201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnZoomInput
         m_Mode: 0
         m_Arguments:
@@ -2851,8 +2762,8 @@ MonoBehaviour:
     m_ActionName: Player/Zoom[/Mouse/scroll]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1972696194}
-        m_TargetAssemblyTypeName: PlayerMovementHandler, Assembly-CSharp
+      - m_Target: {fileID: 1972696201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnJumpInput
         m_Mode: 0
         m_Arguments:
@@ -2867,8 +2778,8 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1972696197}
-        m_TargetAssemblyTypeName: PlayerInteractHandler, Assembly-CSharp
+      - m_Target: {fileID: 1972696201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnInteractInput
         m_Mode: 0
         m_Arguments:
@@ -2886,6 +2797,108 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!136 &1972696200
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972696189}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1972696201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972696189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 242741a66f1bae64a81cc3d27f2dcb70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2097250800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2097250801}
+  - component: {fileID: 2097250803}
+  - component: {fileID: 2097250802}
+  m_Layer: 7
+  m_Name: InteractTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2097250801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097250800}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1719083733}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2097250802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097250800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14714431b7e0b94d8b41ae65300e583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleClimbChannel: {fileID: 11400000, guid: f2d95df5bc56ba14da5fb143d993d707, type: 2}
+--- !u!65 &2097250803
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097250800}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

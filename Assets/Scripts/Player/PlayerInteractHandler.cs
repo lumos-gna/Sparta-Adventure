@@ -1,14 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerInteractHandler : MonoBehaviour
 {
-    [Header("Settings")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float detectDistance;
-    
    
-    [Space(5f)]
+    [Space(10f)]
     [SerializeField] private InteractableEventChannelSO toggleDetectedInteractableChannel;
 
 
@@ -23,10 +20,22 @@ public class PlayerInteractHandler : MonoBehaviour
         _camera = Camera.main;
     }
 
-    private void Update()
+
+    public void Interact()
+    {
+        if (!_isInteracting && _curInteractTarget != null)
+        {
+            _isInteracting = true;
+
+            _curInteractTarget.Interact(gameObject);
+            
+            toggleDetectedInteractableChannel.Raise(null);
+        }
+    }
+
+    public void DetectInteractable()
     {
         if (_isInteracting) return;
-        
         
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
 
@@ -50,21 +59,6 @@ public class PlayerInteractHandler : MonoBehaviour
             {
                 _curInteractTarget = null;
 
-                toggleDetectedInteractableChannel.Raise(null);
-            }
-        }
-    }
-
-    public void OnInteractInput(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started)
-        {
-            if (!_isInteracting && _curInteractTarget != null)
-            {
-                _isInteracting = true;
-
-                _curInteractTarget.Interact(gameObject);
-            
                 toggleDetectedInteractableChannel.Raise(null);
             }
         }
