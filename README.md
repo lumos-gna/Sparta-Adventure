@@ -4,6 +4,8 @@
 * 제작 기간 : 2025.05.16 ~ 2025.05.23
 
 
+
+
 ## 주요 기능
 
 * 3인칭 카메라 이동
@@ -17,6 +19,8 @@
 
 
 * 점프 플랫폼 & 벽타기
+  
+![Climb&JumpPlatform](https://github.com/user-attachments/assets/b93e21a4-bc52-4bf5-b204-af16b1713d98)
 
 
 * 레이저 장애물
