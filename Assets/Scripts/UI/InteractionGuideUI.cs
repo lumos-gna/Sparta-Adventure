@@ -28,7 +28,7 @@ public class InteractionGuideUI : MonoBehaviour
    {
       if (_interactHandler.CurTarget != null)
       {
-         _rectTransform.position = _camera.WorldToScreenPoint(_interactHandler.CurTarget.InteractInfoPos);
+         _rectTransform.position = _camera.WorldToScreenPoint(_interactHandler.CurTarget.GetInfoPos());
          
          _canvasGroup.alpha = 1;
       }
