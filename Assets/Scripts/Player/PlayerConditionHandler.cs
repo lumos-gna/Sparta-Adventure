@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+
 
 public class PlayerConditionHandler : MonoBehaviour
 {
@@ -19,14 +19,6 @@ public class PlayerConditionHandler : MonoBehaviour
     [SerializeField] private float regenStaminaRate;
     [SerializeField] private float regenStaminaDelay;
     
-    [Space(10f)]
-    [SerializeField] private float jumpStamina;
-
-    [Space(10f)]
-    [SerializeField] private VoidEventChannelSO jumpedChannel;
-    [SerializeField] private FloatEventChannelSO takeDamagedChannel;
-
-    
     private float _curStamina;
     private float _curHealth;
     
@@ -39,23 +31,8 @@ public class PlayerConditionHandler : MonoBehaviour
         _curHealth = maxHealth;
     }
 
-    private void Start()
-    {
-        jumpedChannel.OnEventRaised += UseJumpStamina;
-        takeDamagedChannel.OnEventRaised += TakeHealthDamage;
-    }
 
-    private void OnDestroy()
-    {
-        jumpedChannel.OnEventRaised -= UseJumpStamina;
-        takeDamagedChannel.OnEventRaised -= TakeHealthDamage;
-    }
-
-    void TakeHealthDamage(float damageAmount) => ChangeHelath(damageAmount * -1f);
-
-    void UseJumpStamina() => ChangeStamina(jumpStamina * -1f);
-
-    void ChangeStamina(float amount)
+    public void ChangeStamina(float amount)
     {
         _curStamina += amount;
 
@@ -69,7 +46,7 @@ public class PlayerConditionHandler : MonoBehaviour
         _staminaRegenCoroutine = StartCoroutine(StaminaRegenCoroutine());
     }
 
-    void ChangeHelath(float amount)
+    public void ChangeHelath(float amount)
     {
         _curHealth += amount;
 

@@ -1436,7 +1436,6 @@ MonoBehaviour:
   - {fileID: 62749531}
   forcePower: 600
   damage: 10
-  takeDamagedChannel: {fileID: 11400000, guid: ee56f8e76ea1dd0438a30909638ab660, type: 2}
 --- !u!208 &548181776
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -3500,7 +3499,7 @@ MonoBehaviour:
   defaultMoveSpeed: 10
   airMoveSpeedRate: 0.6
   jumpForce: 200
-  jumpedChannel: {fileID: 11400000, guid: f748e915228f1534aa6dc16c14324315, type: 2}
+  jumpStamina: 10
 --- !u!54 &1972696195
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3579,9 +3578,6 @@ MonoBehaviour:
   maxStamina: 100
   regenStaminaRate: 10
   regenStaminaDelay: 1.5
-  jumpStamina: 10
-  jumpedChannel: {fileID: 11400000, guid: f748e915228f1534aa6dc16c14324315, type: 2}
-  takeDamagedChannel: {fileID: 11400000, guid: ee56f8e76ea1dd0438a30909638ab660, type: 2}
 --- !u!114 &1972696199
 MonoBehaviour:
   m_ObjectHideFlags: 0

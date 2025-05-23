@@ -8,9 +8,6 @@ public class RazerObstacle : MonoBehaviour
     [SerializeField] private float forcePower;
     [SerializeField] private float damage;
     
-    [Space(10f)]
-    [SerializeField] private FloatEventChannelSO takeDamagedChannel;
-
 
     private void Start()
     {
@@ -41,8 +38,11 @@ public class RazerObstacle : MonoBehaviour
                         Vector3 force = (rigid.transform.up + rigid.transform.forward * -2).normalized * forcePower;
                     
                         rigid.AddForce(force, ForceMode.Impulse);
-                    
-                        takeDamagedChannel.Raise(damage);
+
+                        if (rigid.TryGetComponent(out PlayerConditionHandler conditionHandler))
+                        {
+                            conditionHandler.ChangeHelath(damage * -1);
+                        }
                         
                         yield return new WaitForSeconds(0.5f);
                     }

@@ -12,11 +12,7 @@ public class PlayerMovementHandler : MonoBehaviour
     
     [Space(5f)]
     [SerializeField] private float jumpForce;
-    
-    
-    [Space(10f)]
-    [SerializeField] private VoidEventChannelSO jumpedChannel;
-
+    [SerializeField] private float jumpStamina;
     
     private float _moveSpeed;
     
@@ -119,8 +115,8 @@ public class PlayerMovementHandler : MonoBehaviour
         Vector3 jumpDir = new Vector3(inputDelta.x, 0, inputDelta.y) + Vector3.up * 4f;
         
         _rigid.AddForce(jumpDir.normalized * jumpForce , ForceMode.Impulse);
-            
-        jumpedChannel.Raise();
+        
+        _controller.ConditionHandler.ChangeStamina(jumpStamina * -1);
     }
   
     public bool IsGrounded()
